@@ -161,34 +161,32 @@ a:hover {
   transition: background 0.6s ease;
 }
 
-/* --- Animations --- */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
+/* --- Scroll Animations --- */
 .animate-in {
-  animation: fadeInUp 0.6s ease forwards;
   opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-.animate-in--delay-1 { animation-delay: 0.15s; }
-.animate-in--delay-2 { animation-delay: 0.3s; }
-.animate-in--delay-3 { animation-delay: 0.45s; }
-.animate-in--delay-4 { animation-delay: 0.6s; }
+.animate-in.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.animate-in--delay-1 { transition-delay: 0.15s; }
+.animate-in--delay-2 { transition-delay: 0.3s; }
+.animate-in--delay-3 { transition-delay: 0.45s; }
+.animate-in--delay-4 { transition-delay: 0.6s; }
 
 /* --- Media Queries --- */
+@media (prefers-reduced-motion: reduce) {
+  .animate-in {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 @media (max-width: 768px) {
   .container {
     padding: 0 var(--space-md);

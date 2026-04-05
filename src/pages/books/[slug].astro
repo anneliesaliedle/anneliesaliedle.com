@@ -27,11 +27,11 @@ const statusLabel: Record<string, string> = {
   <section class="book-hero">
     <div class="container">
       <div class="book-hero__grid">
-        <div class="book-hero__image animate-in">
+        <div class="book-hero__image">
           <img src={book.image} alt={book.title} />
         </div>
         <div class="book-hero__content">
-          <span class="book-hero__genre animate-in">{book.genre}</span>
+          <span class="book-hero__genre">{book.genre}</span>
           <h1 class="animate-in animate-in--delay-1">{book.title}</h1>
           <p class="book-hero__tagline animate-in animate-in--delay-2">{book.tagline}</p>
           <span class="book-hero__status animate-in animate-in--delay-2">{statusLabel[book.status]}</span>

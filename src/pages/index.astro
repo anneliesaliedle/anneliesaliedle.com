@@ -20,7 +20,7 @@ import { books } from '../content/books';
           <a href="/about" class="btn btn--ghost">About Me</a>
         </div>
       </div>
-      <div class="hero__image animate-in animate-in--delay-2">
+      <div class="hero__image">
         <img src="/images/hero-banner.jpg" alt="Anneliesa Liedle" />
       </div>
     </div>
@@ -33,7 +33,7 @@ import { books } from '../content/books';
         <span class="section__label">Currently Querying</span>
         <h2>The Dirt: A Rally Novel</h2>
       </div>
-      <div class="featured-book animate-in animate-in--delay-1" data-theme="the-dirt">
+      <div class="animate-in animate-in--delay-1" data-theme="the-dirt">
         <a href="/books/the-dirt" class="featured-book__inner">
           <div class="featured-book__image">
             <img src="/images/the-dirt.jpg" alt="The Dirt: A Rally Novel" />
@@ -62,7 +62,7 @@ import { books } from '../content/books';
         <span class="section__label">Coming Soon</span>
         <h2>Upcoming Projects</h2>
       </div>
-      <div class="book-grid">
+      <div class="book-grid animate-in animate-in--delay-1">
         {books.filter(b => b.status === 'upcoming').map((book, i) => (
           <BookCard {...book} index={i} />
         ))}
