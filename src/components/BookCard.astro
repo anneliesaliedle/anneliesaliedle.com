@@ -1,0 +1,122 @@
+---
+interface Props {
+  slug: string;
+  title: string;
+  genre: string;
+  tagline: string;
+  status: string;
+  image: string;
+  theme: string;
+  index: number;
+}
+
+const { slug, title, genre, tagline, status, image, theme, index } = Astro.props;
+
+const statusLabel: Record<string, string> = {
+  querying: 'Currently Querying',
+  writing: 'In Progress',
+  upcoming: 'Upcoming',
+};
+---
+
+<a href={`/books/${slug}`} class={`book-card animate-in animate-in--delay-${index + 1}`} data-theme={theme}>
+  <div class="book-card__image">
+    <img src={image} alt={title} loading="lazy" />
+    <div class="book-card__overlay"></div>
+  </div>
+  <div class="book-card__content">
+    <span class="book-card__genre">{genre}</span>
+    <h3 class="book-card__title">{title}</h3>
+    <p class="book-card__tagline">{tagline}</p>
+    <span class="book-card__status">{statusLabel[status] || status}</span>
+  </div>
+</a>
+
+<style>
+  .book-card {
+    display: block;
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    text-decoration: none;
+  }
+
+  .book-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--color-accent);
+    box-shadow: 0 8px 30px var(--color-accent-glow);
+  }
+
+  .book-card__image {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+  }
+
+  .book-card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .book-card:hover .book-card__image img {
+    transform: scale(1.05);
+  }
+
+  .book-card__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 30%,
+      rgba(10, 10, 15, 0.95) 100%
+    );
+  }
+
+  .book-card__content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: var(--space-lg);
+  }
+
+  .book-card__genre {
+    display: inline-block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-accent-text);
+    margin-bottom: var(--space-sm);
+  }
+
+  .book-card__title {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    color: var(--color-text);
+    margin-bottom: var(--space-sm);
+    line-height: 1.3;
+  }
+
+  .book-card__tagline {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    margin-bottom: var(--space-md);
+    font-style: italic;
+  }
+
+  .book-card__status {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-dim);
+    border: 1px solid var(--color-border);
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+</style>

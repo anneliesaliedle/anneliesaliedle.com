@@ -1,0 +1,322 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BookCard from '../components/BookCard.astro';
+import { books } from '../content/books';
+---
+
+<BaseLayout title="Home">
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero__content">
+        <p class="hero__intro animate-in">Romance-focused fiction writer</p>
+        <h1 class="hero__name animate-in animate-in--delay-1">Anneliesa<br/>Liedle</h1>
+        <p class="hero__tagline animate-in animate-in--delay-2">
+          Character-driven stories about people who don't fit neatly into boxes —
+          and the messy, complicated love that finds them anyway.
+        </p>
+        <div class="hero__cta animate-in animate-in--delay-3">
+          <a href="#books" class="btn btn--primary">Explore the Books</a>
+          <a href="/about" class="btn btn--ghost">About Me</a>
+        </div>
+      </div>
+      <div class="hero__image animate-in animate-in--delay-2">
+        <img src="/images/hero-banner.jpg" alt="Anneliesa Liedle" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Currently Querying -->
+  <section class="section" id="books">
+    <div class="container">
+      <div class="section__header animate-in">
+        <span class="section__label">Currently Querying</span>
+        <h2>The Dirt: A Rally Novel</h2>
+      </div>
+      <div class="featured-book animate-in animate-in--delay-1" data-theme="the-dirt">
+        <a href="/books/the-dirt" class="featured-book__inner">
+          <div class="featured-book__image">
+            <img src="/images/the-dirt.jpg" alt="The Dirt: A Rally Novel" />
+          </div>
+          <div class="featured-book__content">
+            <span class="featured-book__genre">Motorsport Romance</span>
+            <p class="featured-book__tagline">Gravel roads. Borrowed time. One co-driver who changes everything.</p>
+            <p class="featured-book__desc">
+              Australian rally driver Maverick Blaire has spent her career proving she
+              belongs in a sport that never made room for her. When a mechanical failure
+              forces her to take on an untested Scottish co-driver, Mac Graham, she expects
+              dead weight. What she gets is someone who reads the road — and her — better
+              than anyone ever has.
+            </p>
+            <span class="featured-book__cta">Read more &rarr;</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Upcoming Books -->
+  <section class="section">
+    <div class="container">
+      <div class="section__header animate-in">
+        <span class="section__label">Coming Soon</span>
+        <h2>Upcoming Projects</h2>
+      </div>
+      <div class="book-grid">
+        {books.filter(b => b.status === 'upcoming').map((book, i) => (
+          <BookCard {...book} index={i} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- About Teaser -->
+  <section class="section section--accent">
+    <div class="container container--narrow">
+      <div class="about-teaser animate-in">
+        <h2>Stories that push back.</h2>
+        <p>
+          I write romance because love stories matter — but I refuse to write ones
+          that reduce characters to tropes or treat harm as shorthand for passion.
+          My characters are complicated, flawed, and real. They earn their happy endings.
+        </p>
+        <a href="/about" class="btn btn--primary">More about me</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* --- Hero --- */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: 80px;
+  }
+
+  .hero .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+
+  .hero__intro {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--color-accent-text);
+    margin-bottom: var(--space-md);
+  }
+
+  .hero__name {
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    line-height: 1;
+    margin-bottom: var(--space-lg);
+  }
+
+  .hero__tagline {
+    font-size: 1.1rem;
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin-bottom: var(--space-xl);
+    max-width: 50ch;
+  }
+
+  .hero__cta {
+    display: flex;
+    gap: var(--space-md);
+  }
+
+  .hero__image {
+    display: flex;
+    justify-content: center;
+  }
+
+  .hero__image img {
+    max-height: 70vh;
+    width: auto;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  }
+
+  /* --- Buttons --- */
+  .btn {
+    display: inline-block;
+    padding: 12px 28px;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    text-decoration: none;
+  }
+
+  .btn--primary {
+    background: var(--color-accent);
+    color: var(--color-bg);
+    font-weight: 500;
+  }
+
+  .btn--primary:hover {
+    filter: brightness(1.15);
+    color: var(--color-bg);
+  }
+
+  .btn--ghost {
+    border: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+  }
+
+  .btn--ghost:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent-text);
+  }
+
+  /* --- Sections --- */
+  .section {
+    padding: var(--space-2xl) 0;
+  }
+
+  .section__header {
+    margin-bottom: var(--space-xl);
+  }
+
+  .section__label {
+    display: inline-block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--color-accent-text);
+    margin-bottom: var(--space-sm);
+  }
+
+  /* --- Featured Book --- */
+  .featured-book__inner {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: var(--space-xl);
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    overflow: hidden;
+    text-decoration: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .featured-book__inner:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 8px 30px var(--color-accent-glow);
+  }
+
+  .featured-book__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    min-height: 400px;
+  }
+
+  .featured-book__content {
+    padding: var(--space-xl) var(--space-xl) var(--space-xl) 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .featured-book__genre {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-accent-text);
+    margin-bottom: var(--space-md);
+  }
+
+  .featured-book__tagline {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.3rem;
+    color: var(--color-text);
+    margin-bottom: var(--space-lg);
+    line-height: 1.4;
+  }
+
+  .featured-book__desc {
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+    line-height: 1.8;
+    margin-bottom: var(--space-lg);
+  }
+
+  .featured-book__cta {
+    font-size: 0.9rem;
+    color: var(--color-accent-text);
+    letter-spacing: 0.05em;
+  }
+
+  /* --- Book Grid --- */
+  .book-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-lg);
+  }
+
+  /* --- About Teaser --- */
+  .section--accent {
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .about-teaser {
+    text-align: center;
+  }
+
+  .about-teaser h2 {
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    margin-bottom: var(--space-lg);
+  }
+
+  .about-teaser p {
+    color: var(--color-text-muted);
+    font-size: 1.05rem;
+    line-height: 1.8;
+    margin: 0 auto var(--space-xl);
+    max-width: 60ch;
+  }
+
+  /* --- Mobile --- */
+  @media (max-width: 768px) {
+    .hero .container {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+
+    .hero__tagline {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero__cta {
+      justify-content: center;
+    }
+
+    .hero__image {
+      order: -1;
+    }
+
+    .hero__image img {
+      max-height: 50vh;
+    }
+
+    .featured-book__inner {
+      grid-template-columns: 1fr;
+    }
+
+    .featured-book__content {
+      padding: var(--space-lg);
+    }
+
+    .book-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

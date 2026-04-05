@@ -1,0 +1,102 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Contact" description="Get in touch with Anneliesa Liedle.">
+  <section class="contact">
+    <div class="container container--narrow">
+      <div class="contact__content">
+        <span class="contact__label animate-in">Get in Touch</span>
+        <h1 class="animate-in animate-in--delay-1">Let's Talk</h1>
+        <p class="contact__lead animate-in animate-in--delay-2">
+          Whether you're an agent interested in my work, a fellow writer,
+          or just someone who wants to argue about rally stages — I'd love to hear from you.
+        </p>
+
+        <div class="contact__card animate-in animate-in--delay-3">
+          <h2>Email</h2>
+          <a href="mailto:anneliesa.liedle@gmail.com" class="contact__email">
+            anneliesa.liedle@gmail.com
+          </a>
+        </div>
+
+        <div class="contact__note animate-in animate-in--delay-4">
+          <p>
+            For literary agent inquiries, please include the genre, word count,
+            and a brief pitch. I'll respond as quickly as I can.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    padding-top: 80px;
+  }
+
+  .contact__content {
+    text-align: center;
+    padding: var(--space-2xl) 0;
+  }
+
+  .contact__label {
+    display: inline-block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--color-accent-text);
+    margin-bottom: var(--space-md);
+  }
+
+  .contact__content h1 {
+    margin-bottom: var(--space-lg);
+  }
+
+  .contact__lead {
+    font-size: 1.1rem;
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin: 0 auto var(--space-2xl);
+    max-width: 50ch;
+  }
+
+  .contact__card {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: var(--space-xl);
+    margin-bottom: var(--space-xl);
+  }
+
+  .contact__card h2 {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-md);
+  }
+
+  .contact__email {
+    font-family: var(--font-display);
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    color: var(--color-accent-text);
+    transition: color 0.2s ease;
+  }
+
+  .contact__email:hover {
+    color: var(--color-text);
+  }
+
+  .contact__note p {
+    color: var(--color-text-dim);
+    font-size: 0.9rem;
+    line-height: 1.7;
+    max-width: 50ch;
+    margin: 0 auto;
+  }
+</style>

@@ -1,0 +1,148 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="About" description="About Anneliesa Liedle — romance-focused fiction writer based in Denver.">
+  <section class="about-hero">
+    <div class="container">
+      <div class="about-hero__grid">
+        <div class="about-hero__image animate-in">
+          <img src="/images/hero-banner.jpg" alt="Anneliesa Liedle" />
+        </div>
+        <div class="about-hero__content">
+          <span class="about-hero__label animate-in">About the Author</span>
+          <h1 class="animate-in animate-in--delay-1">Anneliesa Liedle</h1>
+          <p class="about-hero__lead animate-in animate-in--delay-2">
+            Romance-focused fiction writer based in Denver, Colorado.
+            Currently querying a debut novel.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-body">
+    <div class="container container--narrow">
+      <div class="about-body__content animate-in">
+        <p>
+          I write character-driven stories where love isn't a destination — it's the
+          thing that cracks people open and forces them to grow. My characters are
+          messy, stubborn, and real. They don't fall into love so much as crash into it.
+        </p>
+        <p>
+          I'm drawn to stories that push back against harmful tropes — the ones that
+          romanticize control, erase agency, or treat trauma as a personality trait.
+          I believe romance can be intense, complicated, even dark, without being
+          careless with the people in it.
+        </p>
+        <p>
+          My work spans genres — from the gravel roads of international rally racing
+          to dying generation ships to the Egyptian underworld — but the through-line
+          is always the same: complicated people trying to be honest with each other,
+          usually failing first, and earning something real by the end.
+        </p>
+
+        <h2>What I Write</h2>
+        <ul class="about-list">
+          <li><strong>Motorsport Romance</strong> — adrenaline, trust, and the intimacy of a two-person crew</li>
+          <li><strong>Fantasy &amp; Sci-Fi Romance</strong> — world-building that serves the relationship, not the other way around</li>
+          <li><strong>Dark Fantasy Romance</strong> — mythology reimagined, power dynamics examined, consent centered</li>
+        </ul>
+
+        <h2>Beyond the Page</h2>
+        <p>
+          When I'm not writing, I'm probably watching rally highlights, researching
+          obscure mythology, or convincing myself that the next chapter will be easier
+          than the last one. I live in Denver with an ever-growing collection of
+          half-finished notebooks and strong opinions about fictional people.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about-hero {
+    padding-top: calc(80px + var(--space-2xl));
+    padding-bottom: var(--space-xl);
+  }
+
+  .about-hero__grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+
+  .about-hero__image img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  }
+
+  .about-hero__label {
+    display: inline-block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--color-accent-text);
+    margin-bottom: var(--space-md);
+  }
+
+  .about-hero__content h1 {
+    margin-bottom: var(--space-lg);
+  }
+
+  .about-hero__lead {
+    font-size: 1.15rem;
+    color: var(--color-text-muted);
+    line-height: 1.7;
+  }
+
+  .about-body {
+    padding: var(--space-xl) 0 var(--space-2xl);
+  }
+
+  .about-body__content p {
+    color: var(--color-text-muted);
+    font-size: 1.05rem;
+    line-height: 1.9;
+    margin-bottom: var(--space-lg);
+    max-width: none;
+  }
+
+  .about-body__content h2 {
+    margin-top: var(--space-xl);
+    margin-bottom: var(--space-lg);
+    font-size: 1.6rem;
+  }
+
+  .about-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .about-list li {
+    padding: var(--space-md) 0;
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .about-list li strong {
+    color: var(--color-accent-text);
+  }
+
+  @media (max-width: 768px) {
+    .about-hero__grid {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+
+    .about-hero__image img {
+      max-width: 300px;
+      margin: 0 auto;
+    }
+  }
+</style>

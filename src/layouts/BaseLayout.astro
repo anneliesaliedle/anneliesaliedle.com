@@ -1,0 +1,220 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  theme?: string;
+}
+
+const { title, description = "Anneliesa Liedle — Romance-focused fiction writer. Character-driven stories that challenge the genre.", theme } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" data-theme={theme}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title} | Anneliesa Liedle</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="glow-bg"></div>
+    <nav class="nav">
+      <div class="container nav__inner">
+        <a href="/" class="nav__logo">Anneliesa Liedle</a>
+        <div class="nav__links">
+          <a href="/#books">Books</a>
+          <a href="/about">About</a>
+          <a href="/contact">Contact</a>
+        </div>
+        <button class="nav__toggle" aria-label="Toggle menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </nav>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer__inner">
+          <p class="footer__name">Anneliesa Liedle</p>
+          <p class="footer__tagline">Character-driven stories that challenge the genre.</p>
+          <div class="footer__links">
+            <a href="mailto:anneliesa.liedle@gmail.com">Email</a>
+          </div>
+          <p class="footer__copy">&copy; {new Date().getFullYear()} Anneliesa Liedle. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      const toggle = document.querySelector('.nav__toggle');
+      const links = document.querySelector('.nav__links');
+      toggle?.addEventListener('click', () => {
+        links?.classList.toggle('nav__links--open');
+        toggle.classList.toggle('nav__toggle--open');
+      });
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  @import '../styles/global.css';
+</style>
+
+<style>
+  /* --- Navigation --- */
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: var(--space-md) 0;
+    background: rgba(10, 10, 15, 0.8);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .nav__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav__logo {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    color: var(--color-text);
+    letter-spacing: 0.02em;
+  }
+
+  .nav__logo:hover {
+    color: var(--color-accent-text);
+  }
+
+  .nav__links {
+    display: flex;
+    gap: var(--space-lg);
+  }
+
+  .nav__links a {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    text-transform: lowercase;
+    letter-spacing: 0.08em;
+    transition: color 0.2s ease;
+  }
+
+  .nav__links a:hover {
+    color: var(--color-accent-text);
+  }
+
+  .nav__toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+  }
+
+  .nav__toggle span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--color-text);
+    transition: all 0.3s ease;
+  }
+
+  .nav__toggle--open span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+
+  .nav__toggle--open span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .nav__toggle--open span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+  }
+
+  /* --- Footer --- */
+  .footer {
+    margin-top: var(--space-2xl);
+    padding: var(--space-xl) 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .footer__inner {
+    text-align: center;
+  }
+
+  .footer__name {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    margin-bottom: var(--space-xs);
+  }
+
+  .footer__tagline {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    margin-bottom: var(--space-lg);
+  }
+
+  .footer__links {
+    display: flex;
+    gap: var(--space-lg);
+    justify-content: center;
+    margin-bottom: var(--space-lg);
+  }
+
+  .footer__links a {
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+    text-transform: lowercase;
+    letter-spacing: 0.08em;
+  }
+
+  .footer__copy {
+    color: var(--color-text-dim);
+    font-size: 0.8rem;
+  }
+
+  /* --- Mobile --- */
+  @media (max-width: 768px) {
+    .nav__toggle {
+      display: flex;
+    }
+
+    .nav__links {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-md);
+      padding: var(--space-lg);
+      background: rgba(10, 10, 15, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .nav__links--open {
+      display: flex;
+    }
+  }
+</style>
