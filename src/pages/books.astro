@@ -1,0 +1,259 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { books } from '../content/books';
+---
+
+<BaseLayout title="Books" description="All books by Anneliesa Liedle — motorsport romance, sci-fi, dark fantasy.">
+  <section class="books-hero">
+    <div class="container">
+      <span class="books-hero__label">Library</span>
+      <h1 class="animate-in">Books</h1>
+      <p class="books-hero__sub animate-in animate-in--delay-1">Every world I'm building. Click in to explore.</p>
+    </div>
+  </section>
+
+  <section class="books-grid-section">
+    <div class="container">
+      <div class="books-mosaic">
+        {books.map((book, i) => (
+          <a href={`/books/${book.slug}`} class={`tile tile--${book.theme}`} data-theme={book.theme} style={`animation-delay: ${i * 0.1}s;`}>
+            <div class="tile__bg">
+              <img src={book.image} alt={book.title} loading="lazy" />
+              <div class="tile__overlay"></div>
+              <div class="tile__glow"></div>
+            </div>
+            <div class="tile__content">
+              <span class="tile__genre">{book.genre}</span>
+              <h2 class="tile__title">{book.title}</h2>
+              <p class="tile__tagline">{book.tagline}</p>
+              <p class="tile__desc">{book.description}</p>
+              <div class="tile__footer">
+                <span class="tile__status">{book.status === 'querying' ? 'Currently Querying' : 'Upcoming'}</span>
+                <span class="tile__characters">{book.characters}</span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .books-hero {
+    padding-top: calc(80px + var(--space-2xl));
+    padding-bottom: var(--space-xl);
+    text-align: center;
+  }
+
+  .books-hero__label {
+    display: inline-block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: var(--color-text-dim);
+    margin-bottom: var(--space-md);
+  }
+
+  .books-hero h1 {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    margin-bottom: var(--space-md);
+  }
+
+  .books-hero__sub {
+    color: var(--color-text-muted);
+    font-size: 1rem;
+    max-width: 40ch;
+    margin: 0 auto;
+  }
+
+  /* --- Stacked horizontal tiles --- */
+  .books-mosaic {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-bottom: var(--space-2xl);
+  }
+
+  .tile {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    text-decoration: none;
+    color: var(--color-text);
+    display: block;
+    height: 200px;
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s ease;
+    animation: tile-in 0.6s ease both;
+  }
+
+  @keyframes tile-in {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .tile:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Background image */
+  .tile__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .tile__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 20%;
+    transition: transform 0.6s ease;
+    filter: blur(4px);
+  }
+
+  .tile:hover .tile__bg img {
+    transform: scale(1.05);
+  }
+
+  /* Gradient overlay — toned per-book color wash */
+  .tile__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to right,
+      var(--tile-tint) 0%,
+      var(--tile-tint-mid) 40%,
+      var(--tile-tint-deep) 70%
+    );
+  }
+
+  .tile--the-dirt {
+    --tile-tint: rgba(196, 110, 60, 0.18);
+    --tile-tint-mid: rgba(160, 80, 40, 0.35);
+    --tile-tint-deep: rgba(80, 35, 15, 0.6);
+  }
+  .tile--snowblind {
+    --tile-tint: rgba(140, 180, 210, 0.18);
+    --tile-tint-mid: rgba(90, 140, 180, 0.35);
+    --tile-tint-deep: rgba(30, 60, 90, 0.6);
+  }
+  .tile--ashes-in-orbit {
+    --tile-tint: rgba(130, 80, 190, 0.18);
+    --tile-tint-mid: rgba(90, 50, 150, 0.35);
+    --tile-tint-deep: rgba(40, 20, 80, 0.6);
+  }
+  .tile--slave-of-the-underworld {
+    --tile-tint: rgba(196, 160, 60, 0.18);
+    --tile-tint-mid: rgba(150, 110, 30, 0.35);
+    --tile-tint-deep: rgba(70, 50, 15, 0.6);
+  }
+
+  /* Per-theme accent glow on hover */
+  .tile__glow {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+
+  .tile:hover .tile__glow { opacity: 1; }
+
+  .tile--the-dirt .tile__glow {
+    background: radial-gradient(ellipse at 50% 100%, rgba(196, 90, 60, 0.12), transparent 70%);
+  }
+  .tile--snowblind .tile__glow {
+    background: radial-gradient(ellipse at 50% 100%, rgba(91, 159, 196, 0.12), transparent 70%);
+  }
+  .tile--ashes-in-orbit .tile__glow {
+    background: radial-gradient(ellipse at 50% 100%, rgba(139, 94, 196, 0.12), transparent 70%);
+  }
+  .tile--slave-of-the-underworld .tile__glow {
+    background: radial-gradient(ellipse at 50% 100%, rgba(196, 149, 60, 0.12), transparent 70%);
+  }
+
+  /* Accent border on hover */
+  .tile--the-dirt:hover { box-shadow: 0 20px 60px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(196, 90, 60, 0.3); }
+  .tile--snowblind:hover { box-shadow: 0 20px 60px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(91, 159, 196, 0.3); }
+  .tile--ashes-in-orbit:hover { box-shadow: 0 20px 60px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(139, 94, 196, 0.3); }
+  .tile--slave-of-the-underworld:hover { box-shadow: 0 20px 60px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(196, 149, 60, 0.3); }
+
+  /* Content — positioned right, vertically centered */
+  .tile__content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1.5rem 2.5rem 1.5rem 40%;
+  }
+
+  .tile__genre {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: 0.35rem;
+  }
+
+  .tile--the-dirt .tile__genre { color: #e07050; }
+  .tile--snowblind .tile__genre { color: #7ab8dd; }
+  .tile--ashes-in-orbit .tile__genre { color: #a87ee0; }
+  .tile--slave-of-the-underworld .tile__genre { color: #ddb050; }
+
+  .tile__title {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    line-height: 1.2;
+    margin-bottom: 0.35rem;
+  }
+
+  .tile__tagline {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 0.6rem;
+    line-height: 1.4;
+  }
+
+  .tile__desc {
+    display: none;
+  }
+
+  .tile__footer {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .tile__status {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    padding: 5px 14px;
+    border-radius: 20px;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+
+  .tile__characters {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-style: italic;
+  }
+
+  @media (max-width: 768px) {
+    .tile { height: 180px; }
+    .tile__content { padding: 1.25rem 1.5rem 1.25rem 35%; }
+    .tile__title { font-size: 1.2rem; }
+    .tile__tagline { font-size: 0.8rem; }
+  }
+</style>
