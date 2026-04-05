@@ -83,9 +83,12 @@ const statusLabel: Record<string, string> = {
     left: 0;
     right: 0;
     padding: var(--space-lg);
-    background: linear-gradient(to bottom, transparent 0%, rgba(10, 10, 15, 0.6) 20%, rgba(10, 10, 15, 0.85) 100%);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    padding-top: calc(var(--space-lg) + 2rem);
+    background: linear-gradient(to bottom, transparent 0%, rgba(10, 10, 15, 0.4) 25%, rgba(10, 10, 15, 0.75) 50%, rgba(10, 10, 15, 0.9) 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 30%);
+    mask-image: linear-gradient(to bottom, transparent 0%, black 30%);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
   }
 
   .book-card__genre {
