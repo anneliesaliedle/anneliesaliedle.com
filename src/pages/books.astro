@@ -4,15 +4,18 @@ import { books, hasPage, statusLabel } from '../content/books';
 
 const visible = books.filter((b) => !b.hidden);
 const featured = visible.find((b) => b.status === 'querying');
-const nextUp = visible.filter((b) => b.status === 'revising');
-const inProgress = visible.filter((b) => b.status === 'writing');
+// Draft-complete books first, then works in progress.
+const inTheWorks = [
+  ...visible.filter((b) => b.status === 'revising'),
+  ...visible.filter((b) => b.status === 'writing'),
+];
 
 const shelves = [
   { id: 'all', label: 'All' },
   { id: 'motorsport', label: 'Motorsport' },
   { id: 'fantasy', label: 'Fantasy & Sci-Fi' },
   { id: 'historical', label: 'Historical' },
-].filter((s) => s.id === 'all' || inProgress.some((b) => b.shelf === s.id));
+].filter((s) => s.id === 'all' || inTheWorks.some((b) => b.shelf === s.id));
 ---
 
 <BaseLayout title="Books" description="All books by Anneliesa Liedle — motorsport romance, sci-fi, fantasy, and historical.">
@@ -57,91 +60,62 @@ const shelves = [
     </section>
   )}
 
-  {nextUp.length > 0 && (
-    <section class="next-section">
+  {inTheWorks.length > 0 && (
+    <section class="works-section">
       <div class="container">
-        <span class="section-kicker">Next Up</span>
-        <div class="books-mosaic books-mosaic--tight">
-          {nextUp.map((book) => (
-            <a href={`/books/${book.slug}`} class={`tile tile--${book.theme}`} style={`--accent: ${book.accent};`}>
-              <div class="tile__bg">
-                <img src={book.image} alt={book.title} loading="lazy" />
-                <div class="tile__overlay"></div>
-                <div class="tile__glow"></div>
-              </div>
-              <div class="tile__content">
-                <span class="tile__genre">{book.genre}{book.series && <> · {book.series}</>}</span>
-                <h2 class="tile__title">{book.title}</h2>
-                <p class="tile__tagline">{book.tagline}</p>
-                <ul class="tag-list" aria-label="Tags">
-                  {book.tags.map((tag) => <li class="tag">{tag}</li>)}
-                </ul>
-                <div class="tile__footer">
-                  <span class="tile__status">{statusLabel[book.status]}</span>
-                  <span class="tile__characters">{book.characters}</span>
+        <div class="works-header">
+          <div>
+            <span class="section-kicker">In the Works</span>
+            <p class="works-header__sub">Drafts and worlds still under construction.</p>
+          </div>
+          {shelves.length > 2 && inTheWorks.length > 3 && (
+            <div class="chips" role="group" aria-label="Filter by genre">
+              {shelves.map((s, i) => (
+                <button type="button" class="chip" data-filter={s.id} aria-pressed={i === 0 ? 'true' : 'false'}>{s.label}</button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div class="mini-grid">
+          {inTheWorks.map((book) => {
+            const linked = hasPage(book);
+            const Cover = linked ? 'a' : 'div';
+            return (
+              <article class="mini" data-shelf={book.shelf} style={`--accent: ${book.accent};`}>
+                <Cover href={linked ? `/books/${book.slug}` : undefined} class="mini__cover" aria-label={linked ? `More about ${book.title}` : undefined}>
+                  {book.image ? (
+                    <img src={book.image} alt={`${book.title} cover`} loading="lazy" />
+                  ) : (
+                    <span class="mini__monogram" aria-hidden="true">{book.title.replace(/^The\s+/, '').charAt(0)}</span>
+                  )}
+                </Cover>
+                <div class="mini__body">
+                  <span class="mini__badge">{statusLabel[book.status]}</span>
+                  <span class="mini__genre">{book.genre}{book.series && <> · {book.series}</>}</span>
+                  <h2 class="mini__title">
+                    {linked ? <a href={`/books/${book.slug}`}>{book.title}</a> : book.title}
+                  </h2>
+                  {book.subtitle && <p class="mini__subtitle">{book.subtitle}</p>}
+                  {book.tagline && <p class="mini__tagline">{book.tagline}</p>}
+                  <ul class="tag-list" aria-label="Tags">
+                    {book.tags.map((tag) => <li class="tag">{tag}</li>)}
+                  </ul>
+                  {book.characters && <p class="mini__characters">{book.characters}</p>}
+                  {linked && <a href={`/books/${book.slug}`} class="mini__link">Read more &rarr;</a>}
                 </div>
-              </div>
-            </a>
-          ))}
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>
   )}
-
-  <section class="wip-section">
-    <div class="container">
-      <div class="wip-header">
-        <div>
-          <span class="section-kicker">Works in Progress</span>
-          <p class="wip-header__sub">Drafts and worlds still under construction.</p>
-        </div>
-        {shelves.length > 2 && (
-          <div class="chips" role="group" aria-label="Filter by genre">
-            {shelves.map((s, i) => (
-              <button type="button" class="chip" data-filter={s.id} aria-pressed={i === 0 ? 'true' : 'false'}>{s.label}</button>
-            ))}
-          </div>
-        )}
-      </div>
-
-      <div class="books-mosaic">
-        {inProgress.map((book, i) => {
-          const Tag = hasPage(book) ? 'a' : 'div';
-          return (
-            <Tag
-              href={hasPage(book) ? `/books/${book.slug}` : undefined}
-              class={`tile tile--compact${hasPage(book) ? ' tile--link' : ''}`}
-              data-shelf={book.shelf}
-              style={`--accent: ${book.accent}; animation-delay: ${i * 0.08}s;`}
-            >
-              <span class="tile__monogram" aria-hidden="true">{book.title.replace(/^The\s+/, '').charAt(0)}</span>
-              <div class="tile__content">
-                <span class="tile__genre">{book.genre}{book.series && <> · {book.series}</>}</span>
-                <h2 class="tile__title">
-                  {book.title}
-                  {book.subtitle && <span class="tile__subtitle">{book.subtitle}</span>}
-                  {hasPage(book) && <span class="tile__arrow" aria-hidden="true"> &rarr;</span>}
-                </h2>
-                {book.tagline && <p class="tile__tagline">{book.tagline}</p>}
-                <ul class="tag-list" aria-label="Tags">
-                  {book.tags.map((tag) => <li class="tag">{tag}</li>)}
-                </ul>
-                <div class="tile__footer">
-                  <span class="tile__status">{statusLabel[book.status]}</span>
-                  {book.characters && <span class="tile__characters">{book.characters}</span>}
-                </div>
-              </div>
-            </Tag>
-          );
-        })}
-      </div>
-    </div>
-  </section>
 </BaseLayout>
 
 <script>
   const chips = document.querySelectorAll<HTMLButtonElement>('.chip');
-  const items = document.querySelectorAll<HTMLElement>('.books-mosaic [data-shelf]');
+  const items = document.querySelectorAll<HTMLElement>('.mini-grid [data-shelf]');
   chips.forEach((chip) => {
     chip.addEventListener('click', () => {
       const filter = chip.dataset.filter;
@@ -183,6 +157,11 @@ const shelves = [
     margin: 0 auto;
   }
 
+  @keyframes card-in {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   /* --- Tags (shared) --- */
   .tag-list {
     display: flex;
@@ -221,7 +200,7 @@ const shelves = [
       var(--color-bg-card);
     border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--color-border));
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
-    animation: tile-in 0.6s ease both;
+    animation: card-in 0.6s ease both;
   }
 
   .feature__cover {
@@ -344,15 +323,12 @@ const shelves = [
     color: #14100c;
   }
 
-  /* --- Next up (draft complete) --- */
-  .next-section {
-    padding-bottom: var(--space-xl);
+  /* --- In the works: smaller, quieter cards --- */
+  .works-section {
+    padding-bottom: var(--space-2xl);
   }
 
-  .books-mosaic--tight { padding-bottom: 0; }
-
-  /* --- Works in progress --- */
-  .wip-header {
+  .works-header {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
@@ -361,9 +337,9 @@ const shelves = [
     margin-bottom: var(--space-lg);
   }
 
-  .wip-header .section-kicker { margin-bottom: 0.25rem; }
+  .works-header .section-kicker { margin-bottom: 0.25rem; }
 
-  .wip-header__sub {
+  .works-header__sub {
     color: var(--color-text-muted);
     font-size: 0.9rem;
     margin: 0;
@@ -397,212 +373,125 @@ const shelves = [
     color: var(--color-bg);
   }
 
-  /* --- Stacked horizontal tiles --- */
-  .books-mosaic {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding-bottom: var(--space-2xl);
+  .mini-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+    gap: var(--space-lg);
   }
 
-  .tile {
-    position: relative;
+  .mini {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: var(--space-lg);
+    align-items: start;
+    padding: var(--space-lg);
     border-radius: 12px;
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    transition: border-color 0.3s ease;
+    animation: card-in 0.6s ease both;
+  }
+
+  .mini[hidden] { display: none; }
+
+  .mini:hover {
+    border-color: color-mix(in srgb, var(--accent) 35%, var(--color-border));
+  }
+
+  .mini__cover {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 2 / 3;
+    border-radius: 6px;
     overflow: hidden;
-    text-decoration: none;
-    color: var(--color-text);
-    display: block;
-    height: 200px;
-    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s ease;
-    animation: tile-in 0.6s ease both;
+    background: color-mix(in srgb, var(--accent) 12%, var(--color-bg-card));
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+    transition: transform 0.3s ease;
   }
 
-  .tile[hidden] { display: none; }
+  a.mini__cover:hover { transform: translateY(-2px); }
 
-  @keyframes tile-in {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  a.tile:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), inset 0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent);
-  }
-
-  /* Background image */
-  .tile__bg {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-  }
-
-  .tile__bg img {
+  .mini__cover img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 20%;
-    transition: transform 0.6s ease;
-    filter: blur(4px);
-  }
-
-  a.tile:hover .tile__bg img {
-    transform: scale(1.05);
-  }
-
-  /* Gradient overlay — toned per-book color wash */
-  .tile__overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      to right,
-      var(--tile-tint) 0%,
-      var(--tile-tint-mid) 40%,
-      var(--tile-tint-deep) 70%
-    );
-  }
-
-  .tile--snowblind {
-    --tile-tint: rgba(140, 180, 210, 0.18);
-    --tile-tint-mid: rgba(90, 140, 180, 0.35);
-    --tile-tint-deep: rgba(30, 60, 90, 0.6);
-  }
-  .tile--ashes-in-orbit {
-    --tile-tint: rgba(130, 80, 190, 0.18);
-    --tile-tint-mid: rgba(90, 50, 150, 0.35);
-    --tile-tint-deep: rgba(40, 20, 80, 0.6);
-  }
-  .tile--slave-of-the-underworld {
-    --tile-tint: rgba(196, 160, 60, 0.18);
-    --tile-tint-mid: rgba(150, 110, 30, 0.35);
-    --tile-tint-deep: rgba(70, 50, 15, 0.6);
-  }
-
-  /* Accent glow on hover */
-  .tile__glow {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    pointer-events: none;
-    background: radial-gradient(ellipse at 50% 100%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 70%);
-  }
-
-  a.tile:hover .tile__glow { opacity: 1; }
-
-  /* Compact cards — early projects without a cover or blurb yet (not clickable) */
-  .tile--compact {
-    height: auto;
-    min-height: 140px;
-    background:
-      linear-gradient(to right, color-mix(in srgb, var(--accent) 22%, transparent), transparent 75%),
-      var(--color-bg-card);
-    border: 1px solid color-mix(in srgb, var(--accent) 20%, var(--color-border));
-  }
-
-  .tile__monogram {
-    position: absolute;
-    left: 6%;
-    top: 50%;
-    transform: translateY(-50%);
-    font-family: var(--font-display);
-    font-size: 7.5rem;
-    line-height: 1;
-    color: color-mix(in srgb, var(--accent) 35%, transparent);
-    pointer-events: none;
-    user-select: none;
-  }
-
-  .tile--link:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35), inset 0 0 0 1px color-mix(in srgb, var(--accent) 40%, transparent);
-  }
-
-  .tile__arrow {
-    color: var(--accent);
-    font-size: 1rem;
-    transition: margin-left 0.2s ease;
-  }
-
-  .tile--link:hover .tile__arrow { margin-left: 4px; }
-
-  .tile--compact .tile__tagline {
-    font-size: 0.82rem;
-    color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 0.45rem;
-  }
-
-  .tile__subtitle {
     display: block;
+  }
+
+  .mini__monogram {
+    font-family: var(--font-display);
+    font-size: 4rem;
+    color: color-mix(in srgb, var(--accent) 45%, transparent);
+  }
+
+  .mini__badge {
+    display: inline-block;
+    font-size: 0.58rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border);
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 0.6rem;
+  }
+
+  .mini__genre {
+    display: block;
+    font-size: 0.58rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: color-mix(in srgb, var(--accent) 75%, var(--color-text-muted));
+    margin-bottom: 0.3rem;
+  }
+
+  .mini__title {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    line-height: 1.2;
+    margin-bottom: 0.3rem;
+  }
+
+  .mini__title a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .mini__title a:hover { color: var(--accent); }
+
+  .mini__subtitle {
     font-style: italic;
     font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.65);
-    margin-top: 0.15rem;
+    color: var(--color-text-muted);
+    margin-bottom: 0.4rem;
   }
 
-  /* Content — positioned right, vertically centered */
-  .tile__content {
-    position: relative;
-    z-index: 2;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 1.5rem 2.5rem 1.5rem 40%;
-  }
-
-  .tile__genre {
-    font-size: 0.6rem;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    margin-bottom: 0.35rem;
-    color: var(--accent);
-  }
-
-  a.tile .tile__genre {
-    color: color-mix(in srgb, var(--accent) 60%, white);
-    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
-  }
-
-  .tile__title {
-    font-family: var(--font-display);
-    font-size: 1.4rem;
-    line-height: 1.2;
-    margin-bottom: 0.35rem;
-  }
-
-  .tile__tagline {
+  .mini__tagline {
     font-family: var(--font-display);
     font-style: italic;
     font-size: 0.88rem;
-    color: rgba(255, 255, 255, 0.85);
+    color: var(--color-text-muted);
     margin-bottom: 0.6rem;
     line-height: 1.4;
   }
 
-  .tile__footer {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-  }
-
-  .tile__status {
-    font-size: 0.6rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: rgba(255, 255, 255, 0.9);
-    background: rgba(255, 255, 255, 0.15);
-    padding: 5px 14px;
-    border-radius: 20px;
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-  }
-
-  .tile__characters {
-    font-size: 0.7rem;
-    color: rgba(255, 255, 255, 0.7);
+  .mini__characters {
+    font-size: 0.72rem;
     font-style: italic;
+    color: var(--color-text-dim);
+    margin-bottom: 0.6rem;
   }
+
+  .mini__link {
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .mini__link:hover { color: var(--accent); }
 
   @media (max-width: 768px) {
     .feature {
@@ -610,10 +499,7 @@ const shelves = [
       padding: var(--space-lg);
     }
     .feature__cover { max-width: 200px; margin: 0 auto; }
-    .tile, .tile--compact { height: auto; min-height: 150px; }
-    .tile__content { padding: 1.25rem 1.5rem 1.25rem 35%; }
-    .tile__title { font-size: 1.2rem; }
-    .tile__tagline { font-size: 0.8rem; }
-    .tile__monogram { font-size: 6rem; left: 5%; }
+    .mini-grid { grid-template-columns: 1fr; }
+    .mini { grid-template-columns: 96px 1fr; gap: var(--space-md); padding: var(--space-md); }
   }
 </style>
