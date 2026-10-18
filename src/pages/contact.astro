@@ -18,10 +18,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <a href="mailto:anneliesa.liedle@gmail.com" class="contact__email">
             anneliesa.liedle@gmail.com
           </a>
-          <div class="contact__actions">
-            <a href="mailto:anneliesa.liedle@gmail.com" class="contact__btn contact__btn--solid">Send an email</a>
-            <button type="button" class="contact__btn" id="copy-email" data-email="anneliesa.liedle@gmail.com">Copy address</button>
-          </div>
         </div>
 
         <div class="contact__note animate-in animate-in--delay-4">
@@ -34,25 +30,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </div>
   </section>
 </BaseLayout>
-
-<script>
-  const copyBtn = document.getElementById('copy-email') as HTMLButtonElement | null;
-  copyBtn?.addEventListener('click', async () => {
-    const email = copyBtn.dataset.email ?? '';
-    try {
-      await navigator.clipboard.writeText(email);
-    } catch {
-      const ta = document.createElement('textarea');
-      ta.value = email;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      ta.remove();
-    }
-    copyBtn.textContent = 'Copied!';
-    setTimeout(() => { copyBtn.textContent = 'Copy address'; }, 1800);
-  });
-</script>
 
 <style>
   .contact {
@@ -113,45 +90,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   .contact__email:hover {
     color: var(--color-text);
-  }
-
-  .contact__actions {
-    display: flex;
-    justify-content: center;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-    margin-top: var(--space-lg);
-  }
-
-  .contact__btn {
-    font: inherit;
-    font-size: 0.85rem;
-    letter-spacing: 0.06em;
-    padding: 10px 22px;
-    border-radius: 8px;
-    border: 1px solid var(--color-border);
-    background: transparent;
-    color: var(--color-text);
-    cursor: pointer;
-    text-decoration: none;
-    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-  }
-
-  .contact__btn:hover {
-    border-color: var(--color-accent);
-    background: var(--color-accent-glow);
-  }
-
-  .contact__btn--solid {
-    background: var(--color-accent);
-    border-color: var(--color-accent);
-    color: #14100c;
-    font-weight: 600;
-  }
-
-  .contact__btn--solid:hover {
-    background: var(--color-accent-text);
-    color: #14100c;
   }
 
   .contact__note p {
