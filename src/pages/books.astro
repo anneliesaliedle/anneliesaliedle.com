@@ -10,6 +10,9 @@ const inTheWorks = [
   ...visible.filter((b) => b.status === 'writing'),
 ];
 
+// Small cards show only the pairing (M/F, M/M, …), not the trope tags.
+const isPairing = (tag: string) => /^[MFX]\/[MFX]$/.test(tag);
+
 const shelves = [
   { id: 'all', label: 'All' },
   { id: 'motorsport', label: 'Motorsport' },
@@ -98,11 +101,11 @@ const shelves = [
                   </h2>
                   {book.subtitle && <p class="mini__subtitle">{book.subtitle}</p>}
                   {book.tagline && <p class="mini__tagline">{book.tagline}</p>}
-                  <ul class="tag-list" aria-label="Tags">
-                    {book.tags.map((tag) => <li class="tag">{tag}</li>)}
-                  </ul>
                   {book.characters && <p class="mini__characters">{book.characters}</p>}
-                  {linked && <a href={`/books/${book.slug}`} class="mini__link">Read more &rarr;</a>}
+                  <div class="mini__footer">
+                    {book.tags.filter(isPairing).map((tag) => <span class="tag">{tag}</span>)}
+                    {linked && <a href={`/books/${book.slug}`} class="mini__link">Read more &rarr;</a>}
+                  </div>
                 </div>
               </article>
             );
@@ -481,6 +484,13 @@ const shelves = [
     font-style: italic;
     color: var(--color-text-dim);
     margin-bottom: 0.6rem;
+  }
+
+  .mini__footer {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
   }
 
   .mini__link {
