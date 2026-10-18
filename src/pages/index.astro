@@ -51,15 +51,15 @@ import { books } from '../content/books';
     </div>
   </section>
 
-  <!-- Upcoming Books -->
+  <!-- Works in Progress -->
   <section class="section">
     <div class="container">
       <div class="section__header animate-in">
-        <span class="section__label">Coming Soon</span>
-        <h2>Upcoming Projects</h2>
+        <span class="section__label">In Progress</span>
+        <h2>Works in Progress</h2>
       </div>
       <div class="book-grid animate-in animate-in--delay-1">
-        {books.filter(b => b.status === 'upcoming').map((book, i) => (
+        {books.filter(b => b.status === 'writing').map((book, i) => (
           <BookCard {...book} index={i} />
         ))}
       </div>

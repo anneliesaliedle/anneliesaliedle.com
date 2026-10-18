@@ -31,7 +31,7 @@ import { books } from '../content/books';
               </ul>
               <p class="tile__desc">{book.description}</p>
               <div class="tile__footer">
-                <span class="tile__status">{book.status === 'querying' ? 'Currently Querying' : 'Upcoming'}</span>
+                <span class="tile__status">{book.status === 'querying' ? 'Currently Querying' : book.status === 'writing' ? 'In Progress' : 'Upcoming'}</span>
                 <span class="tile__characters">{book.characters}</span>
               </div>
             </div>
