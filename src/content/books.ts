@@ -61,6 +61,7 @@ export const books: Book[] = [
   },
   {
     slug: 'fire-on-the-track',
+    hidden: true, // early WIP; restore by deleting this line
     title: 'Fire on the Track',
     subtitle: 'Fuego en la Pista',
     shelf: 'motorsport',
@@ -74,6 +75,7 @@ export const books: Book[] = [
   },
   {
     slug: 'friction-point',
+    hidden: true, // early WIP; restore by deleting this line
     title: 'Friction Point',
     shelf: 'motorsport',
     series: 'Rally Universe',
@@ -115,6 +117,7 @@ export const books: Book[] = [
   },
   {
     slug: 'queen-of-egypt',
+    hidden: true, // early WIP; restore by deleting this line
     title: 'Queen of Egypt',
     shelf: 'historical',
     accent: '#3fb8aa',
@@ -125,6 +128,7 @@ export const books: Book[] = [
   },
   {
     slug: 'the-sagas-of-iislandor',
+    hidden: true, // early WIP; restore by deleting this line
     title: 'The Sagas of Iislandor',
     shelf: 'fantasy',
     accent: '#8fbf72',

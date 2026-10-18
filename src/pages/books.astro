@@ -95,11 +95,13 @@ const shelves = [
           <span class="section-kicker">Works in Progress</span>
           <p class="wip-header__sub">Drafts and worlds still under construction.</p>
         </div>
-        <div class="chips" role="group" aria-label="Filter by genre">
-          {shelves.map((s, i) => (
-            <button type="button" class="chip" data-filter={s.id} aria-pressed={i === 0 ? 'true' : 'false'}>{s.label}</button>
-          ))}
-        </div>
+        {shelves.length > 2 && (
+          <div class="chips" role="group" aria-label="Filter by genre">
+            {shelves.map((s, i) => (
+              <button type="button" class="chip" data-filter={s.id} aria-pressed={i === 0 ? 'true' : 'false'}>{s.label}</button>
+            ))}
+          </div>
+        )}
       </div>
 
       <div class="books-mosaic">
