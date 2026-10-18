@@ -26,6 +26,9 @@ import { books } from '../content/books';
               <span class="tile__genre">{book.genre}</span>
               <h2 class="tile__title">{book.title}</h2>
               <p class="tile__tagline">{book.tagline}</p>
+              <ul class="tile__tags" aria-label="Tags">
+                {book.tags.map((tag) => <li class="tile__tag">{tag}</li>)}
+              </ul>
               <p class="tile__desc">{book.description}</p>
               <div class="tile__footer">
                 <span class="tile__status">{book.status === 'querying' ? 'Currently Querying' : 'Upcoming'}</span>
@@ -224,6 +227,31 @@ import { books } from '../content/books';
     display: none;
   }
 
+  .tile__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    list-style: none;
+    margin: 0 0 0.6rem;
+    padding: 0;
+  }
+
+  .tile__tag {
+    font-size: 0.58rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.9);
+    border: 1px solid var(--tag-accent, rgba(255, 255, 255, 0.3));
+    padding: 2px 9px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  .tile--the-dirt { --tag-accent: rgba(224, 112, 80, 0.7); }
+  .tile--snowblind { --tag-accent: rgba(122, 184, 221, 0.7); }
+  .tile--ashes-in-orbit { --tag-accent: rgba(168, 126, 224, 0.7); }
+  .tile--slave-of-the-underworld { --tag-accent: rgba(221, 176, 80, 0.7); }
+
   .tile__footer {
     display: flex;
     align-items: center;
@@ -251,7 +279,7 @@ import { books } from '../content/books';
   }
 
   @media (max-width: 768px) {
-    .tile { height: 180px; }
+    .tile { height: auto; min-height: 180px; }
     .tile__content { padding: 1.25rem 1.5rem 1.25rem 35%; }
     .tile__title { font-size: 1.2rem; }
     .tile__tagline { font-size: 0.8rem; }
