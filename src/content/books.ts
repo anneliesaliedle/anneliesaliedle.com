@@ -1,19 +1,39 @@
+export type Shelf = 'motorsport' | 'fantasy' | 'historical';
+
 export interface Book {
   slug: string;
   title: string;
+  subtitle?: string;
   genre: string;
-  tagline: string;
-  description: string;
-  characters: string;
+  shelf: Shelf;
+  series?: string;
+  tagline?: string;
+  description?: string;
+  characters?: string;
   tags: string[];
-  status: 'querying' | 'writing' | 'upcoming';
+  status: 'querying' | 'revising' | 'writing';
+  /** Kept in the repo but left off the public site (e.g. mid-draft). */
+  hidden?: boolean;
   theme: string;
-  image: string;
+  accent: string;
+  image?: string;
 }
+
+/** Books with a cover and blurb get a full tile and their own page; the rest show as compact cards. */
+export const hasPage = (book: Book): boolean => Boolean(book.description && book.image);
+
+export const statusLabel: Record<Book['status'], string> = {
+  querying: 'Currently Querying',
+  revising: 'Draft Complete · In Revision',
+  writing: 'In Progress',
+};
 
 export const books: Book[] = [
   {
     slug: 'the-dirt',
+    shelf: 'motorsport',
+    series: 'Rally Universe',
+    accent: '#e07050',
     title: 'The Dirt: A Rally Novel',
     genre: 'Motorsport Romance',
     tagline: 'Gravel roads. Borrowed time. One co-driver who changes everything.',
@@ -26,6 +46,9 @@ export const books: Book[] = [
   },
   {
     slug: 'snowblind',
+    shelf: 'motorsport',
+    series: 'Rally Universe',
+    accent: '#7ab8dd',
     title: 'Snowblind',
     genre: 'Motorsport Romance',
     tagline: 'Ice under the tires. Fire under the skin.',
@@ -37,7 +60,35 @@ export const books: Book[] = [
     image: '/images/snowblind.jpg',
   },
   {
+    slug: 'fire-on-the-track',
+    title: 'Fire on the Track',
+    subtitle: 'Fuego en la Pista',
+    shelf: 'motorsport',
+    series: 'Rally Universe',
+    accent: '#e8553f',
+    genre: 'Motorsport Romance',
+    characters: 'Enrique Velasco & James Harrison',
+    tags: ['M/M'],
+    status: 'writing',
+    theme: 'fire-on-the-track',
+  },
+  {
+    slug: 'friction-point',
+    title: 'Friction Point',
+    shelf: 'motorsport',
+    series: 'Rally Universe',
+    accent: '#d27a9b',
+    genre: 'Motorsport Romance',
+    characters: 'Ellie Carlisle & Simon Westbrook',
+    tags: ['M/F'],
+    status: 'writing',
+    theme: 'friction-point',
+  },
+  {
     slug: 'ashes-in-orbit',
+    hidden: true, // mid-draft; restore by deleting this line
+    shelf: 'fantasy',
+    accent: '#a87ee0',
     title: 'Ashes in Orbit',
     genre: 'Fantasy Sci-Fi Romance',
     tagline: 'Two enemies. One dying ship. No way home alone.',
@@ -50,14 +101,36 @@ export const books: Book[] = [
   },
   {
     slug: 'slave-of-the-underworld',
+    shelf: 'fantasy',
+    accent: '#ddb050',
     title: 'Slave of the Underworld',
     genre: 'Dark Fantasy Romance',
     tagline: 'Even gods kneel for the right soul.',
     description: 'Goddess of love — that\'s what the immortals call her, though to Hathor it couldn\'t feel farther from the truth. Stolen from her gilded cage and cast into the Underworld, Hathor finds herself trapped in darkness with a creature who has every reason to hate her. Anubis, the jackal-headed god cursed to eternally wander the land of the dead, guards secrets darker than his realm — secrets Hathor must uncover if she is ever to be free of her prison. Survival means trusting the one being she was warned never to touch, and unearthing the truth his cursed heart has kept buried for over three thousand years. As ancient powers stir and the line between captor and salvation blurs, Hathor must choose: the freedom she\'s always craved, or the beast who might be the key to everything.',
     characters: 'Hathor & Anubis',
     tags: ['M/F', 'Captor/Captive', 'Egyptian Mythology'],
-    status: 'writing',
+    status: 'revising',
     theme: 'slave-of-the-underworld',
     image: '/images/slave-of-the-underworld.jpg',
+  },
+  {
+    slug: 'queen-of-egypt',
+    title: 'Queen of Egypt',
+    shelf: 'historical',
+    accent: '#3fb8aa',
+    genre: 'Historical Romance',
+    tags: ['Ancient Egypt'],
+    status: 'writing',
+    theme: 'queen-of-egypt',
+  },
+  {
+    slug: 'the-sagas-of-iislandor',
+    title: 'The Sagas of Iislandor',
+    shelf: 'fantasy',
+    accent: '#8fbf72',
+    genre: 'Epic Fantasy',
+    tags: ['Trilogy'],
+    status: 'writing',
+    theme: 'the-sagas-of-iislandor',
   },
 ];

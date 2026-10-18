@@ -1,10 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { books } from '../../content/books';
+import { books, hasPage, statusLabel } from '../../content/books';
 import type { Book } from '../../content/books';
 
 export function getStaticPaths() {
-  return books.map((book) => ({
+  return books.filter((b) => hasPage(b) && !b.hidden).map((book) => ({
     params: { slug: book.slug },
     props: { book },
   }));
@@ -16,11 +16,6 @@ interface Props {
 
 const { book } = Astro.props;
 
-const statusLabel: Record<string, string> = {
-  querying: 'Currently Querying',
-  writing: 'In Progress',
-  upcoming: 'Upcoming',
-};
 ---
 
 <BaseLayout title={book.title} description={book.tagline} theme={book.theme}>

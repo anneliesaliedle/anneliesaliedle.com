@@ -8,6 +8,12 @@ interface Props {
 }
 
 const { title, description = "Anneliesa Liedle — Romance-focused fiction writer. Character-driven stories that challenge the genre.", theme } = Astro.props;
+import { books, hasPage } from '../content/books';
+
+const statusOrder = { querying: 0, revising: 1, writing: 2 };
+const footerBooks = books
+  .filter((b) => hasPage(b) && !b.hidden)
+  .sort((a, b) => statusOrder[a.status] - statusOrder[b.status]);
 ---
 
 <!doctype html>
@@ -57,10 +63,9 @@ const { title, description = "Anneliesa Liedle — Romance-focused fiction write
           <div class="footer__nav">
             <div class="footer__col">
               <h4 class="footer__heading">Books</h4>
-              <a href="/books/the-dirt">The Dirt</a>
-              <a href="/books/snowblind">Snowblind</a>
-              <a href="/books/ashes-in-orbit">Ashes in Orbit</a>
-              <a href="/books/slave-of-the-underworld">Slave of the Underworld</a>
+              {footerBooks.map((book) => (
+                <a href={`/books/${book.slug}`}>{book.title.split(':')[0]}</a>
+              ))}
             </div>
             <div class="footer__col">
               <h4 class="footer__heading">Connect</h4>

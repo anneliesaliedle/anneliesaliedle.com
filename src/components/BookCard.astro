@@ -1,4 +1,6 @@
 ---
+import { statusLabel } from '../content/books';
+
 interface Props {
   slug: string;
   title: string;
@@ -12,11 +14,6 @@ interface Props {
 
 const { slug, title, genre, tagline, status, image, theme, index } = Astro.props;
 
-const statusLabel: Record<string, string> = {
-  querying: 'Currently Querying',
-  writing: 'In Progress',
-  upcoming: 'Upcoming',
-};
 ---
 
 <a href={`/books/${slug}`} class="book-card" data-theme={theme}>
@@ -28,7 +25,7 @@ const statusLabel: Record<string, string> = {
     <span class="book-card__genre">{genre}</span>
     <h3 class="book-card__title">{title}</h3>
     <p class="book-card__tagline">{tagline}</p>
-    <span class="book-card__status">{statusLabel[status] || status}</span>
+    <span class="book-card__status">{statusLabel[status as keyof typeof statusLabel] || status}</span>
   </div>
 </a>
 

@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BookCard from '../components/BookCard.astro';
-import { books } from '../content/books';
+import { books, hasPage } from '../content/books';
 ---
 
 <BaseLayout title="Home">
@@ -59,7 +59,7 @@ import { books } from '../content/books';
         <h2>Works in Progress</h2>
       </div>
       <div class="book-grid animate-in animate-in--delay-1">
-        {books.filter(b => b.status === 'writing').map((book, i) => (
+        {books.filter(b => b.status !== 'querying' && !b.hidden && hasPage(b)).sort((a, b) => Number(b.status === 'revising') - Number(a.status === 'revising')).map((book, i) => (
           <BookCard {...book} index={i} />
         ))}
       </div>
